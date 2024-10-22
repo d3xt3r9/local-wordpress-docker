@@ -26,6 +26,8 @@
 
 ```bash
 git clone https://github.com/d3xt3r9/local-wordpress-docker
+```
+```bash
 cd local-wordpress-docker
 ```
 
