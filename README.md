@@ -25,7 +25,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/local-wordpress-docker.git
+git clone https://github.com/d3xt3r9/local-wordpress-docker
 cd local-wordpress-docker
 ```
 
