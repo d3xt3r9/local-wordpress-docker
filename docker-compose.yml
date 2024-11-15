@@ -5,9 +5,9 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      - MYSQL_DATABASE=wordpress
+      - MYSQL_DATABASE=$DB_NAME
     volumes:
-      - ./dbdata:/var/lib/mysql
+      - dbdata:/var/lib/mysql
     command: '--default-authentication-plugin=mysql_native_password'
     ports:
       - '3306:3306'
@@ -25,7 +25,32 @@ services:
       - WORDPRESS_DB_HOST=db:3306
       - WORDPRESS_DB_USER=$MYSQL_USER
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
-      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_DB_NAME=$DB_NAME
+    volumes:
+      - ./wordpress:/var/www/html
+    networks:
+      - app-network
+
+  wp-cli:
+    image: wordpress:cli
+    container_name: wp-cli
+    depends_on:
+      - wordpress
+    user: www-data
+    environment:
+      - WORDPRESS_DB_HOST=db:3306
+      - WORDPRESS_DB_USER=$MYSQL_USER
+      - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
+      - WORDPRESS_DB_NAME=$DB_NAME
+    entrypoint: >
+      sh -c "
+      until wp --allow-root db check; do
+        echo 'Waiting for database connection...';
+        sleep 5;
+      done;
+      echo 'Connect to http://localhost';
+      tail -f /dev/null;
+      "
     volumes:
       - ./wordpress:/var/www/html
     networks:
@@ -61,3 +86,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  dbdata:

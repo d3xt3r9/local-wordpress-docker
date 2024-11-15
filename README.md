@@ -27,6 +27,7 @@
 ```bash
 git clone https://github.com/d3xt3r9/local-wordpress-docker
 ```
+
 ```bash
 cd local-wordpress-docker
 ```
@@ -77,4 +78,12 @@ This command will stop the containers but keep the data. To remove containers an
 
 ```bash
 docker-compose down --volumes
+```
+
+## Connect to WP CLI container
+
+This command will open an interactive terminal and you will be able to run wp commands
+
+```bash
+docker exec -it wp-cli bash
 ```
